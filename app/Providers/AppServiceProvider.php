@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +14,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Use our custom CSS-based pagination view on all ->links() calls
-        Paginator::defaultView('pagination.custom');
+        if (app()->environment('production')) {
+            // Force HTTPS and use the real incoming host so asset() URLs
+            // are correct on Render regardless of APP_URL in .env
+            URL::forceScheme('https');
+            URL::forceRootUrl(request()->getSchemeAndHttpHost());
+        }
     }
 }
