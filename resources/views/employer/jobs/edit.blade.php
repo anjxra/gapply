@@ -27,7 +27,7 @@
 
                         {{-- Current image or placeholder --}}
                         @if($job->job_image)
-                            <img id="imagePreview" src="{{ asset('images/jobs/' . $job->job_image) }}"
+                            <img id="imagePreview" src="{{ asset('storage/jobs/' . $job->job_image) }}"
                                  alt="Current image"
                                  style="width:100px;height:100px;object-fit:cover;border-radius:var(--radius-lg);border:1px solid var(--border);flex-shrink:0;">
                         @else

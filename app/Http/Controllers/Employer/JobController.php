@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class JobController extends Controller
@@ -39,11 +40,9 @@ class JobController extends Controller
 
         // Handle image upload
         if ($request->hasFile('job_image')) {
-            $file      = $request->file('job_image');
-            $filename  = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->extension();
-            $dest      = public_path('images/jobs');
-            if (!is_dir($dest)) mkdir($dest, 0755, true);
-            $file->move($dest, $filename);
+            $file     = $request->file('job_image');
+            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->extension();
+            $file->storeAs('jobs', $filename, 'public');
             $data['job_image'] = $filename;
         }
 
@@ -73,16 +72,13 @@ class JobController extends Controller
 
         // Handle image upload
         if ($request->hasFile('job_image')) {
-            // Delete old image
+            // Delete old image from storage
             if ($job->job_image) {
-                $old = public_path('images/jobs/' . $job->job_image);
-                if (file_exists($old)) unlink($old);
+                Storage::disk('public')->delete('jobs/' . $job->job_image);
             }
-            $file      = $request->file('job_image');
-            $filename  = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->extension();
-            $dest      = public_path('images/jobs');
-            if (!is_dir($dest)) mkdir($dest, 0755, true);
-            $file->move($dest, $filename);
+            $file     = $request->file('job_image');
+            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->extension();
+            $file->storeAs('jobs', $filename, 'public');
             $data['job_image'] = $filename;
         } else {
             // Keep existing image
@@ -98,10 +94,9 @@ class JobController extends Controller
     {
         $this->authorizeJob($job);
 
-        // Delete image file
+        // Delete image from storage
         if ($job->job_image) {
-            $path = public_path('images/jobs/' . $job->job_image);
-            if (file_exists($path)) unlink($path);
+            Storage::disk('public')->delete('jobs/' . $job->job_image);
         }
 
         $title = $job->title;

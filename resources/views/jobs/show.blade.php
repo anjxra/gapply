@@ -16,7 +16,7 @@
         {{-- Job cover image banner --}}
         @if($job->job_image)
         <div style="width:100%;height:200px;overflow:hidden;border-radius:var(--radius-lg) var(--radius-lg) 0 0;border-bottom:1px solid var(--border);">
-            <img src="{{ asset('images/jobs/' . $job->job_image) }}"
+            <img src="{{ asset('storage/jobs/' . $job->job_image) }}"
                  alt="{{ $job->title }}"
                  style="width:100%;height:100%;object-fit:cover;">
         </div>
@@ -29,7 +29,7 @@
                 <div style="display:flex;align-items:flex-start;gap:1.125rem;">
                     {{-- Company logo/initials --}}
                     @if($job->job_image)
-                        <img src="{{ asset('images/jobs/' . $job->job_image) }}"
+                        <img src="{{ asset('storage/jobs/' . $job->job_image) }}"
                              alt="{{ $job->employer->name }}"
                              style="width:56px;height:56px;object-fit:cover;border-radius:var(--radius-lg);border:1px solid var(--border);flex-shrink:0;">
                     @else

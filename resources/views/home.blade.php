@@ -118,7 +118,7 @@
                 <div style="display:flex;align-items:center;gap:1rem;flex:1;">
                     {{-- Company image or initials --}}
                     @if($job->job_image)
-                        <img src="{{ asset('images/jobs/' . $job->job_image) }}"
+                        <img src="{{ asset('storage/jobs/' . $job->job_image) }}"
                              alt="{{ $job->employer->name }}"
                              style="width:48px;height:48px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border);flex-shrink:0;">
                     @else

@@ -62,7 +62,7 @@
 
             {{-- Thumbnail --}}
             @if($job->job_image)
-                <img src="{{ asset('images/jobs/' . $job->job_image) }}"
+                <img src="{{ asset('storage/jobs/' . $job->job_image) }}"
                      style="width:42px;height:42px;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--border);flex-shrink:0;">
             @else
                 <div style="width:42px;height:42px;border-radius:var(--radius-sm);background:var(--surface-alt);border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-faint);">

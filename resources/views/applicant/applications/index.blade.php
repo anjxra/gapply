@@ -68,7 +68,7 @@
                         <td>
                             <div style="display:flex;align-items:center;gap:.75rem;">
                                 @if($app->job && $app->job->job_image)
-                                    <img src="{{ asset('images/jobs/' . $app->job->job_image) }}"
+                                    <img src="{{ asset('storage/jobs/' . $app->job->job_image) }}"
                                          alt="{{ $app->job->title }}"
                                          style="width:36px;height:36px;object-fit:cover;border-radius:var(--radius-sm);border:1px solid var(--border);flex-shrink:0;">
                                 @else
