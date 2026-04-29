@@ -41,7 +41,9 @@ class JobController extends Controller
         if ($request->hasFile('job_image')) {
             $file      = $request->file('job_image');
             $filename  = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->extension();
-            $file->move(public_path('images/jobs'), $filename);
+            $dest      = public_path('images/jobs');
+            if (!is_dir($dest)) mkdir($dest, 0755, true);
+            $file->move($dest, $filename);
             $data['job_image'] = $filename;
         }
 
@@ -78,7 +80,9 @@ class JobController extends Controller
             }
             $file      = $request->file('job_image');
             $filename  = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->extension();
-            $file->move(public_path('images/jobs'), $filename);
+            $dest      = public_path('images/jobs');
+            if (!is_dir($dest)) mkdir($dest, 0755, true);
+            $file->move($dest, $filename);
             $data['job_image'] = $filename;
         } else {
             // Keep existing image

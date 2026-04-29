@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,11 +15,20 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (app()->environment('production')) {
-            // Force HTTPS and use the real incoming host so asset() URLs
-            // are correct on Render regardless of APP_URL in .env
-            URL::forceScheme('https');
-            URL::forceRootUrl(request()->getSchemeAndHttpHost());
+        // Use our custom compact pagination on every paginated list
+        Paginator::defaultView('pagination.custom');
+
+        // Fix asset/route URLs when running behind a reverse proxy (Render, etc.)
+        // Triggers on any HTTPS request regardless of APP_ENV setting
+        if (!app()->runningInConsole()) {
+            $proto = request()->header('X-Forwarded-Proto')
+                  ?? request()->header('X-Forwarded-Ssl')
+                  ?? (request()->isSecure() ? 'https' : 'http');
+
+            if ($proto === 'https') {
+                URL::forceScheme('https');
+                URL::forceRootUrl('https://' . request()->getHost());
+            }
         }
     }
 }
